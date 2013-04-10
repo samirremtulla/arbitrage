@@ -2,13 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-body{
+.welcome_page{
   /*background-image: url("home-page-bg.jpeg");*/
-  background-image: url("http://wallstreetgraphics.com/wp-content/uploads/2012/05/Ticker_Blue_Stock.jpg");
-  background-size:100%;
+  /*background-image: url("http://wallstreetgraphics.com/wp-content/uploads/2012/05/Ticker_Blue_Stock.jpg");
+  background-size:100%;*/
 }
 
-h1{
+.welcome_page h1{
   margin-left: 50%;
-  color:white;
+/*  color:white;*/
 }
