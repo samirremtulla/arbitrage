@@ -1,3 +1,6 @@
 <div class = "welcome_page">
 <h1>See If You Can Be The Best</h1>
+  <% if current_user %>
+    <%= link_to "Start Game", new_game_path, :class => "btn btn-large btn-danger welcome_page_btn"%>
+  <%end%>
 </div>

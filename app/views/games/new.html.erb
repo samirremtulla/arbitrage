@@ -1,2 +1,45 @@
-<h1>Games#new</h1>
-<p>Find me in app/views/games/new.html.erb</p>
+<h2>Welcome <%= current_user.username%></h2>
+
+<div class= "prices_monitor">
+  <table class = "table">
+      <thead>
+        <th>Terminal</th>
+        <th></th>
+        <th></th>
+      </thead>
+    <tbody>
+      <tr>
+        <th>Commodity</th>
+        <th>Price</th>
+        <th>Change</th>
+        <th>Buy</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class= "user_panel">
+  <table class = "table">
+      <thead>
+        <th>Dashboard</th>
+        <th></th>
+        <th></th>
+      </thead>
+    <tbody>
+      <tr>
+        <th>Balance</th>
+        <th>$500</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <th>Inventory:</th>
+        <th>Item</th>
+        <th>Cost</th>
+        <th>Sell</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button class= "btn btn-large btn-inverse next_day_btn" style="margin-top:20px">Next Day</button>

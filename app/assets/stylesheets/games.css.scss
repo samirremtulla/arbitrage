@@ -1,3 +1,17 @@
-// Place all the styles related to the games controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.prices_monitor, .user_panel{
+  height: 300px;
+  width: 45%;
+  border: 1px solid black;
+  margin-top: 10px;
+  float: left;
+}
+
+.user_panel{
+  float: right;
+}
+
+
+.next_button_btn{
+  clear:both;
+
+}
