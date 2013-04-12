@@ -164,6 +164,7 @@ $(document).ready(function(){
           nextTurn();
           if (count ===0){
             alert("Game Over! Your score was $" + _balance);
+      $(".next_day_btn").replaceWith("<a><button class='btn btn-large btn-danger' style='margin-top:20px'>High Scores</button></a>");
           }
       $('.turns').replaceWith('<p class="turns"> Turns Remaining: ' + count +'</p>');
 
