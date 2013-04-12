@@ -37,7 +37,7 @@ $(document).ready(function(){
 
       $(".prices_monitor .table tbody").append('<tr>');
       $(".prices_monitor .table tbody").append('<td>' + _stocks[i].name +'</td>');
-      $(".prices_monitor .table tbody").append('<td>' + '$' + _stocks[i].currentPrice +'</td>');
+      $(".prices_monitor .table tbody").append('<td class ="current_price' + i + '">' + '$' + _stocks[i].currentPrice +'</td>');
       $(".prices_monitor .table tbody").append('<td><button data-stock-id="'+i+'" class="btn game-buy">Buy</button></td>');
       // console.log('<td><button data-stock-id="'+i+'">Buy</button></td>');
       $(".prices_monitor .table tbody").append('</tr>');
@@ -115,87 +115,60 @@ $(document).ready(function(){
     $('.current_quantity'+id).replaceWith('<td class="current_quantity'+id+'">' +  _stocks[id].quantity +'</td>');
     $('.current_value'+id).replaceWith('<td class="current_value'+id+'">' + '$' + currentValue +'</td>');
   }
+      // $(".prices_monitor .table tbody").append('<td class ="current_price' + i + '">' + '$' + _stocks[i].currentPrice +'</td>');
+
+  function updatePrices(id){
+    // _stocks[id].quantity += quantity;
+    $('.current_price'+id).replaceWith('<td class ="current_price' + id + '">' + '$' + _stocks[id].currentPrice +'</td>');
+    console.log('.current_value'+id);
+  }
+
+  function nextTurn(){
+    for (i=0; i<_stocks.length;i++){
+      _stocks[i].currentPrice = randomPrice(_stocks[i].minPrice, _stocks[i].maxPrice);
+      updatePrices(i)
+      updateInventory(i,0);
+    }
+
+  }
+
+  function gameOver(){
+    //http://www.webdeveloperjuice.com/2012/03/29/how-to-make-snake-game-using-jquery/
+  }
 
 //*******ACTUAL GAME*********//
+
     printStocks();
     printInitialBalance();
     printInventory();
-  $(".game-buy").click(function(){
-      // alert($(this).attr("data-stock-id"));
-      var id = $(this).attr("data-stock-id")
-      buyItem(id);
-  });
+    playGame();
 
-  $(".game-sell").click(function(){
-      // alert($(this).attr("data-stock-id"));
-      var id = $(this).attr("data-stock-id")
-      sellItem(id);
-  });
+
+  function playGame(){
+    var count = 15;
+      $(".game-buy").click(function(){
+          // alert($(this).attr("data-stock-id"));
+          var id = $(this).attr("data-stock-id");
+          buyItem(id);
+      });
+
+      $(".game-sell").click(function(){
+          // alert($(this).attr("data-stock-id"));
+          var id = $(this).attr("data-stock-id");
+          sellItem(id);
+      });
+
+      $(".next_day_btn").click(function(){
+          console.log(count);
+          count -= 1;
+          nextTurn();
+          if (count ===0){
+            alert("Game Over! Your score was $" + _balance);
+          }
+      $('.turns').replaceWith('<p class="turns"> Turns Remaining: ' + count +'</p>');
+
+    });
+
+  }
 
 });
-
-
-
-
-
-  // function previousStockPrice(){
-  //   for (i=0;i<1;i++){
-  //     if (_stocks[i].currentPrice===0){
-  //       return 0;
-  //     }
-  //     else{
-  //       return _stocks[i].currentPrice;  
-  //     }
-  //   }
-  // }
-
-// var isis = function(){
-//   var $_stocks
-//   var _stocks
-
-//   function getRandomIntInRange(min,max){
-//     return Math.floor(Math.random()*(max-min+1)+min)
-//   }
-
-//   Stock = function(name, minPrice, maxPrice){
-//     this.name = name;
-//     this.minPrice = minPrice;
-//     this.maxPrice = maxPrice;
-//     this.recalculatePrice();
-//   }
-
-//   Stock.prototype.recalculatePrice = function(){
-//     this.currentPrice = getRandomIntInRange(this.minPrice, this.maxPrice)
-//   }
-
-//   _stocks = [
-//     new Stock('Silver', 250, 500),
-//     new Stock('Titanium', 100, 250),
-//     new Stock('Sugar', 350, 500),
-//     new Stock('Gold', 1000, 1500),
-//     new Stock('Coffee', 5, 25),
-//   ];
-
-// function printStocks(){
-//   $_stocks.text('')
-
-//   for (k in _stocks){
-//     var v, stocks, $row, $stock, $value, $buttonGroup;
-//     $row = $('<tr>');
-//     $stock = $('<td>').addClass('stock');
-//     $value = $('<td>').addClass('value');
-//     v = stocks[k];
-
-//     $stock.text(v.name);
-//     $stock.text('$' + v.currentPrice);
-      
-//     $row.append($stock);
-//     $row.append($value);
-      
-//     $_stocks.append($row);
-
-//   }
-
-// }
-
-// }();
