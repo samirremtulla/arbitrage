@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  console.log("hello!");
+  // console.log("hello!");
 
   var _stocks, _balance;
   
@@ -8,20 +8,21 @@ $(document).ready(function(){
     return Math.floor(Math.random()*(max-min+1)+min)
   }
 
-  Stock = function(name, minPrice, maxPrice){
+  Stock = function(name, minPrice, maxPrice, quantity){
     this.name = name;
     this.minPrice = minPrice;
     this.maxPrice = maxPrice;
+    this.quantity = quantity;
     // this.previousPrice = previousStockPrice();
     this.currentPrice = randomPrice(minPrice, maxPrice);
   }
 
   _stocks = [
-  new Stock('Silver', 250, 500),
-  new Stock('Titanium', 100, 250),
-  new Stock('Sugar', 350, 500),
-  new Stock('Gold', 1000, 1500),
-  new Stock('Coffee', 5, 25),
+  new Stock('Silver', 250, 500, 0),
+  new Stock('Titanium', 100, 250, 0),
+  new Stock('Sugar', 350, 500, 0),
+  new Stock('Gold', 1000, 1500, 0),
+  new Stock('Coffee', 5, 25, 0),
   ];
 
   function printStocks(){
@@ -30,15 +31,15 @@ $(document).ready(function(){
       var $row, $stock;
       $row=$("<tr>");
       $stock=$("<td>").addClass('stock');
-      console.log(_stocks[i].name);
-      console.log($row);
-      console.log(_stocks[i].currentPrice);
+      // console.log(_stocks[i].name);
+      // console.log($row);
+      // console.log(_stocks[i].currentPrice);
 
       $(".prices_monitor .table tbody").append('<tr>');
       $(".prices_monitor .table tbody").append('<td>' + _stocks[i].name +'</td>');
       $(".prices_monitor .table tbody").append('<td>' + '$' + _stocks[i].currentPrice +'</td>');
       $(".prices_monitor .table tbody").append('<td><button data-stock-id="'+i+'" class="btn game-buy">Buy</button></td>');
-      console.log('<td><button data-stock-id="'+i+'">Buy</button></td>');
+      // console.log('<td><button data-stock-id="'+i+'">Buy</button></td>');
       $(".prices_monitor .table tbody").append('</tr>');
     }
   }
@@ -53,31 +54,54 @@ $(document).ready(function(){
 
   function updatedBalance(cost){
     _balance = _balance - cost;
-    console.log(_balance);
+    // console.log(_balance);
     $('.balance_value').replaceWith('<th class="balance_value">' + '$' + _balance +'</th>');
   }
 
   function buyItem(id){
     var currentItem = _stocks[id];
-    console.log(currentItem);
+    // console.log(currentItem);
     var quantity = parseInt(prompt("How much would you like to buy? All metrics are in pounds."));
     
     //check if they can afford it
-    var cost = quantity * currentItem.currentPrice
-    console.log(cost);
+    var cost = quantity * currentItem.currentPrice;
+    // console.log(cost);
     if (_balance<cost){
-      alert("You can't afford this!")
+      alert("You can't afford this!");
     }
     else{
-      updatedBalance(cost)
-      alert("You just bought " + quantity + "lb. of " + currentItem.name + " for $" + cost)  
-    }
-    
+      updatedBalance(cost);
+      alert("You just bought " + quantity + "lb. of " + currentItem.name + " for $" + cost);
+      updateInventory(id, quantity);
+    }  
+  }
+
+
+  function printInventory(){
+     for (i=0; i<_stocks.length; i++){
+
+      var currentValue = _stocks[i].currentPrice * _stocks[i].quantity;
+
+      $(".user_panel .table tbody").append('<tr>');
+      $(".user_panel .table tbody").append('<td>' + _stocks[i].name +'</td>');
+      $(".user_panel .table tbody").append('<td class="current_quantity'+i+'">' +  _stocks[i].quantity +'</td>');
+      $(".user_panel .table tbody").append('<td class="current_value'+i+'">' + '$' + currentValue +'</td>');
+      $(".user_panel .table tbody").append('<td><button data-stock-id="'+i+'" class="btn game-sell">Sell</button></td>');
+      $(".user_panel .table2 tbody").append('</tr>');
+    }console.log('<td class="current_quantity'+i+'">');
+  }
+
+  function updateInventory(id, quantity){
+    _stocks[id].quantity = quantity;
+    var currentValue = _stocks[id].currentPrice * _stocks[id].quantity;
+    $('.current_quantity'+i).replaceWith('<td class="current_quantity">' +  _stocks[id].quantity +'</td>');
+    $('.current_value'+i).replaceWith('<td class="current_value">' + '$' + currentValue +'</td>');
   }
 
 //*******ACTUAL GAME*********//
     printStocks();
     printInitialBalance();
+    printInventory();
   $(".game-buy").click(function(){
       // alert($(this).attr("data-stock-id"));
       var id = $(this).attr("data-stock-id")
