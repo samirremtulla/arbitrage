@@ -52,8 +52,8 @@ $(document).ready(function(){
     $(".balance").append('<th class="balance_value">' + '$' + _balance +'</th>');
   }
 
-  function updatedBalance(cost){
-    _balance = _balance - cost;
+  function updatedBalance(dollars){
+    _balance = _balance + dollars;
     // console.log(_balance);
     $('.balance_value').replaceWith('<th class="balance_value">' + '$' + _balance +'</th>');
   }
@@ -70,9 +70,27 @@ $(document).ready(function(){
       alert("You can't afford this!");
     }
     else{
-      updatedBalance(cost);
+      updatedBalance(-cost);
       alert("You just bought " + quantity + "lb. of " + currentItem.name + " for $" + cost);
       updateInventory(id, quantity);
+    }  
+  }
+
+
+  function sellItem(id){
+    var currentItem = _stocks[id];
+    // console.log(currentItem);
+    var quantity = parseInt(prompt("How much would you like to sell? All metrics are in pounds."));
+    var funds = quantity * currentItem.currentPrice
+
+    //check if they have the amount
+    if (currentItem.quantity<quantity){
+      alert("You can't sell this much!");
+    }
+    else{
+      updatedBalance(funds);
+      alert("You just sold " + quantity + "lb. of " + currentItem.name + " for $" + currentItem.currentPrice);
+      updateInventory(id, -quantity);
     }  
   }
 
@@ -92,10 +110,10 @@ $(document).ready(function(){
   }
 
   function updateInventory(id, quantity){
-    _stocks[id].quantity = quantity;
+    _stocks[id].quantity += quantity;
     var currentValue = _stocks[id].currentPrice * _stocks[id].quantity;
-    $('.current_quantity'+i).replaceWith('<td class="current_quantity">' +  _stocks[id].quantity +'</td>');
-    $('.current_value'+i).replaceWith('<td class="current_value">' + '$' + currentValue +'</td>');
+    $('.current_quantity'+id).replaceWith('<td class="current_quantity'+id+'">' +  _stocks[id].quantity +'</td>');
+    $('.current_value'+id).replaceWith('<td class="current_value'+id+'">' + '$' + currentValue +'</td>');
   }
 
 //*******ACTUAL GAME*********//
@@ -106,6 +124,12 @@ $(document).ready(function(){
       // alert($(this).attr("data-stock-id"));
       var id = $(this).attr("data-stock-id")
       buyItem(id);
+  });
+
+  $(".game-sell").click(function(){
+      // alert($(this).attr("data-stock-id"));
+      var id = $(this).attr("data-stock-id")
+      sellItem(id);
   });
 
 });
