@@ -1,7 +1,7 @@
 $(document).ready(function(){
   console.log("hello!");
 
-  var _stocks;
+  var _stocks, _balance;
   
 
   function randomPrice(min,max){
@@ -25,7 +25,8 @@ $(document).ready(function(){
   ];
 
   function printStocks(){
-    for (i=0; i<1; i++){
+    for (i=0; i<_stocks.length; i++){
+    //for (i=0; i<4; i++){
       var $row, $stock;
       $row=$("<tr>");
       $stock=$("<td>").addClass('stock');
@@ -35,12 +36,58 @@ $(document).ready(function(){
 
       $(".prices_monitor .table tbody").append('<tr>');
       $(".prices_monitor .table tbody").append('<td>' + _stocks[i].name +'</td>');
-      $(".prices_monitor .table tbody").append('<td>' + _stocks[i].currentPrice +'</td>');
-      $(".prices_monitor .table tbody").append('<td>t3</td>');
-      $(".prices_monitor .table tbody").append('<td><button>Buy</button></td>');
+      $(".prices_monitor .table tbody").append('<td>' + '$' + _stocks[i].currentPrice +'</td>');
+      $(".prices_monitor .table tbody").append('<td><button data-stock-id="'+i+'" class="btn game-buy">Buy</button></td>');
+      console.log('<td><button data-stock-id="'+i+'">Buy</button></td>');
       $(".prices_monitor .table tbody").append('</tr>');
     }
   }
+
+  //listens for button press
+  _balance = 500;
+
+
+  function printInitialBalance(){
+    $(".balance").append('<th class="balance_value">' + '$' + _balance +'</th>');
+  }
+
+  function updatedBalance(cost){
+    _balance = _balance - cost;
+    console.log(_balance);
+    $('.balance_value').replaceWith('<th class="balance_value">' + '$' + _balance +'</th>');
+  }
+
+  function buyItem(id){
+    var currentItem = _stocks[id];
+    console.log(currentItem);
+    var quantity = parseInt(prompt("How much would you like to buy? All metrics are in pounds."));
+    
+    //check if they can afford it
+    var cost = quantity * currentItem.currentPrice
+    console.log(cost);
+    if (_balance<cost){
+      alert("You can't afford this!")
+    }
+    else{
+      updatedBalance(cost)
+      alert("You just bought " + quantity + "lb. of " + currentItem.name + " for $" + cost)  
+    }
+    
+  }
+
+//*******ACTUAL GAME*********//
+    printStocks();
+    printInitialBalance();
+  $(".game-buy").click(function(){
+      // alert($(this).attr("data-stock-id"));
+      var id = $(this).attr("data-stock-id")
+      buyItem(id);
+  });
+
+});
+
+
+
 
 
   // function previousStockPrice(){
@@ -53,10 +100,6 @@ $(document).ready(function(){
   //     }
   //   }
   // }
-
-  printStocks()
-
-});
 
 // var isis = function(){
 //   var $_stocks
